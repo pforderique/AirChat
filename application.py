@@ -20,8 +20,10 @@ def index():
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
+
+        hashed_pass = pbkdf2_sha256.hash(password) # automatically takes care of num iterations and adding the 'salt'
     
-        user = User(username=username, password=password)
+        user = User(username=username, password=hashed_pass)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -39,6 +41,12 @@ def login():
 
     # else a get method was used, show them the page!
     return render_template("login.html", form=login_form)
+
+
+@app.route("/<username>")
+def user(username):
+    user_obj = User.query.filter_by(username=username).first()
+    return str(vars(user_obj))
 
 if __name__ == "__main__":
     app.run(debug=True)
