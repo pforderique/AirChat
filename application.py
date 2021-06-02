@@ -11,6 +11,7 @@ def index():
     #* will return TRUE if VALID form was submitted using the POST method
     if reg_form.validate_on_submit():
         return "success!!"
+        
     return render_template('index.html', form=reg_form)
 
 if __name__ == "__main__":
