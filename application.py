@@ -1,4 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from flask_login.utils import logout_user
 from flask_sqlalchemy import SQLAlchemy
 from wtform_fields import *
 from models import *
@@ -11,6 +13,14 @@ app.secret_key = 'replace later'
 app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
+
+# Configure flask login
+login = LoginManager(app)
+login.init_app(app)
+
+@login.user_loader
+def load_user(id):
+    return db.session.query(User).filter(User.id == id).first()
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -37,16 +47,33 @@ def login():
 
     # Allow user to login if validation success
     if login_form.validate_on_submit():
-        return "Logged in!!!"
+        user_obj = User.query.filter_by(username=login_form.username.data).first()
+        login_user(user_obj)
+
+        return redirect(url_for('chat'))
 
     # else a get method was used, show them the page!
     return render_template("login.html", form=login_form)
 
+@app.route("/chat", methods=["GET", "POST"])
+# @login_required
+def chat():
+    if not current_user.is_authenticated:
+        return "Please login before seeing chat"
+
+    return "Chat with me"
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    logout_user()
+    return "Logged out using flask login"
 
 @app.route("/<username>")
 def user(username):
     user_obj = User.query.filter_by(username=username).first()
-    return str(vars(user_obj))
+    if user_obj: return str(vars(user_obj))
+    else: return "user not found"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
