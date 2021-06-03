@@ -14,6 +14,7 @@ load_dotenv()
 # configure app
 app = Flask(__name__)
 app.secret_key = environ.get("SECRET_KEY")
+app.config['WTF_CSRF_SECRET_KEY'] = environ.get('CSRF_SECRET_KEY')
 
 # configure database
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
