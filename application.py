@@ -1,6 +1,8 @@
+from time import localtime, strftime
 from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, send, emit
 from wtform_fields import *
 from models import *
 
@@ -9,9 +11,12 @@ app = Flask(__name__)
 app.secret_key = 'replace later'
 
 # configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ifupgnxvqwmwii:cfe31f1cbedadcbfbb4a9d65459f1ffd3de8f330d9dae74d54b4870a59d9db43@ec2-34-195-143-54.compute-1.amazonaws.com:5432/d49m67nj1c58cs'
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
+
+# Initialize flask Socketio
+socketio = SocketIO(app)
 
 # Configure flask login
 login = LoginManager(app)
@@ -59,11 +64,11 @@ def login():
 @app.route("/chat", methods=["GET", "POST"])
 # @login_required
 def chat():
-    if not current_user.is_authenticated:
-        flash("Please log in to view.", 'danger')
-        return redirect(url_for('login'))
+    # if not current_user.is_authenticated:
+    #     flash("Please log in to view.", 'danger')
+    #     return redirect(url_for('login'))
 
-    return "Chat with me"
+    return render_template('chat.html', username=current_user.username)
 
 @app.route("/logout", methods=["GET"])
 def logout():
@@ -78,5 +83,13 @@ def user(username):
     else: return "user not found"
 
 
+@socketio.on('message')
+def message(data):
+    print(f"\n\n{data}\n\n")
+    # sends that data to connected clients -- by default, it pushes it to the event bucket called 'message'
+    send({'msg':data['msg'], 'username':data['username'], 'time_stamp': strftime('%b-%d %I:%M%p', localtime())}) 
+    # emit('some-event', 'this is a custom event message') # sends data to the 'some-event' bucket on clientside
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)  
+    socketio.run(app, debug=True)
