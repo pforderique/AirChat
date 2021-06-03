@@ -3,16 +3,21 @@ from flask import Flask, render_template, redirect, url_for, flash
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from dotenv import load_dotenv
 from wtform_fields import *
 from models import *
+from os import environ
+
+# take environment variables from .env
+load_dotenv()
 
 # configure app
 app = Flask(__name__)
-app.secret_key = 'replace later'
+app.secret_key = environ.get("SECRET_KEY")
 
 # configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Initialize flask Socketio

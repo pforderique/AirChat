@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     
     let room = "Lounge"; // auto join this room
+    joinRoom(room)
 
     // socket.on('connect', function() { // can also just use () => here too 
     //     socket.send("I am connected!") // using SEND will automatically send it to bucket labeled 'message'
