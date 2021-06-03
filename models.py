@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from application import app
+# from application import app
 
 db = SQLAlchemy()
 # db.init_app(app=app)
