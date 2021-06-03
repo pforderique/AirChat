@@ -71,9 +71,9 @@ def login():
 @app.route("/chat", methods=["GET", "POST"])
 # @login_required
 def chat():
-    # if not current_user.is_authenticated:
-    #     flash("Please log in to view.", 'danger')
-    #     return redirect(url_for('login'))
+    if not current_user.is_authenticated:
+        flash("Please log in to view.", 'danger')
+        return redirect(url_for('login'))
 
     return render_template('chat.html', username=current_user.username, rooms=ROOMS)
 
