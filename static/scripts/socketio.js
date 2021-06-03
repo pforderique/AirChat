@@ -69,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('join', {'username': username, 'room' : room });
         // Clear message area
         document.querySelector('#display-message-section').innerHTML = '';
+        // Autofocus on text box
+        document.querySelector('#user_message').focus();
     }
     
     // Print system message
