@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'replace later'
 
 # configure database
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://ifupgnxvqwmwii:cfe31f1cbedadcbfbb4a9d65459f1ffd3de8f330d9dae74d54b4870a59d9db43@ec2-34-195-143-54.compute-1.amazonaws.com:5432/d49m67nj1c58cs'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
 
