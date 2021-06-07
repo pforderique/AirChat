@@ -4,7 +4,7 @@ from .models import User
 from . import db
 
 views = Blueprint('views', __name__)
-ROOMS = ["lounge", "news", "games", "coding"]
+ROOMS = ["global", "news", "games", "coding"]
 
 @views.route("/", methods = ["GET", "POST"])
 def home():
@@ -18,7 +18,7 @@ def chat():
         flash("Please log in to view.", 'danger')
         return redirect(url_for('auth.login'))
 
-    return render_template('chat.html', username=current_user.username, rooms=ROOMS)
+    return render_template('chat.html', user=current_user, rooms=ROOMS)
 
 @views.route("/<username>")
 def user(username):

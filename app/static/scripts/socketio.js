@@ -81,3 +81,77 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#display-message-section').append(p);
     }
 })
+
+// $(document).ready(function() {  
+//     var socket = io.connect('/'); //'http://' + document.domain + ':' + location.port);
+//     let room = "Global"; // auto join this room
+//     joinRoom(room)
+
+//     // message event for the client (message in flask is the backend stuff of course) for when we receive
+//     socket.on('message', data =>{
+//         var $p = $("<p>");
+//         const $span_username = $("<span>");
+//         const $span_timestamp = $("<span>");
+//         const $br = $("<br>");
+
+//         if (data.username) {
+//             // Then this message was sent by a USER
+//             $span_username.html(data.username);
+//             $span_timestamp.html(data.time_stamp);
+//             $p.html($span_username.prop("outerHTML") + $br.prop("outerHTML") + data.msg + $br.prop("outerHTML") + $span_timestamp.prop("outerHTML")); // msg contains the message, as we defined
+
+//             // attach append the data to the end there
+//             $('#display-message-section').append($p);
+//             // erase the value in the message bar
+//             $('#user_message').value = '';
+//         } else {
+//             // ELSE this was a system generated message
+//             printSysMsg(data['msg']);
+//         }
+//     })
+//     // Send Message Button =  Standard event listenter for the click of the button
+//     $('#send_message').onclick = () => {
+//         // grab the text and send it to the server as a JSON 
+//         socket.send({
+//             'msg' : document.querySelector('#user_message').value,
+//             'username': username, // which we added as a const in our html file
+//             'room' : room,
+//         } );
+//     }
+
+//     // Room Selection
+//     $('.select-room').forEach(p => {
+//         p.onclick = () => {
+//             let newRoom = p.html();
+//             if (newRoom === room) {
+//                 msg = `You are already in room ${room}.`
+//                 printSysMsg(msg);
+//             } else {
+//                 leaveRoom(room);
+//                 joinRoom(newRoom);
+//                 room = newRoom;
+//             }
+//         };  
+//     })
+
+//     // Leave room
+//     function leaveRoom(room) {
+//         socket.emit('leave', {'username': username, 'room' : room });
+//     }
+
+//     // Join room
+//     function joinRoom(room) {
+//         socket.emit('join', {'username': username, 'room' : room });
+//         // Clear message area
+//         $('#display-message-section').html('');
+//         // Autofocus on text box
+//         $('#user_message').focus();
+//     }
+    
+//     // Print system message
+//     function printSysMsg(msg) {
+//         var $p = $("<p>");
+//         $p.html(msg);
+//         $('#display-message-section').append($p);
+//     }
+// });  

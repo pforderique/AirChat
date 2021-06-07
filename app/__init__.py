@@ -15,9 +15,6 @@ db = SQLAlchemy()
 socketio = SocketIO()
 login = LoginManager()
 
-
-# Socket variavles
-
 def create_app():
 
     # configure app
