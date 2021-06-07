@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect('/');//'http://' + document.domain + ':' + location.port);
     
-    let room = "Lounge"; // auto join this room
+    let room = current_room; // auto join this room
     joinRoom(room)
 
     // socket.on('connect', function() { // can also just use () => here too 
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // })
 
     // Send Message Button =  Standard event listenter for the click of the button
-    document.querySelector('#send_message').onclick = () =>{
+    document.querySelector('#send_message').onclick = () => {
         // grab the text and send it to the server as a JSON 
         socket.send({
             'msg' : document.querySelector('#user_message').value,

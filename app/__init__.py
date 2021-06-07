@@ -10,7 +10,7 @@ from os import environ, path
 load_dotenv()
 
 # global variables
-DB_NAME = 'dbmain.db'
+DB_NAME = 'maindb.db'
 db = SQLAlchemy()
 socketio = SocketIO()
 login = LoginManager()

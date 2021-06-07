@@ -29,4 +29,5 @@ class Room(db.Model):
     __tablename__ = 'rooms'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), unique=True, nullable=False)
+    password = db.Column(db.String(), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)

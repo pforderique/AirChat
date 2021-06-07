@@ -55,12 +55,27 @@
                 <!-- Sidebar start (Room Selection) -->
                 <nav id="sidebar">
                     <h4>Rooms</h4>
+                        <p id="Global" class="select-room cursor-pointer">Global</p> <!--defualt Global Room-->      
                     {% for room in rooms %}
-                        <p id="{{ room|title }}" class="select-room cursor-pointer">{{ room|title }}</p> <!--Turns room names into title case-->
+                        <p id="{{ room.name|title }}" class="select-room cursor-pointer">{{ room.name|title }}</p> <!--Turns room names into title case-->
                     {% endfor %}
 
                     <!-- Create Room button -->
-                    <button id="create_room" class="btn btn-warning" type="button">Create Room <i class="fas fa-plus-circle"></i></button>
+                    <button id="open_modal" class="btn btn-warning" type="button">Create/Join Room <i class="fas fa-plus-circle"></i></button>
+                    <!-- Create Room Form -->
+                    <div id="room_modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <form id="room-creation" action="{{url_for('views.chat')}}" method="POST">
+                                <label for="room_name">Room Name: </label>
+                                <input type="text" class="form-control" placeholder="Enter Room Name" aria-describedby="basic-addon2" autocomplete="off" name="room_name">
+                                <label for="password">Room Password: </label>
+                                <input type="text" class="form-control" placeholder="Enter a Password" aria-describedby="basic-addon2" autocomplete="off" name="password">
+                                <br>
+                                <button id="create_room" class="btn btn-warning" type="button submit" form="room-creation">Create/Join Room <i class="fas fa-plus-circle"></i></button>
+                            </form>
+                        </div>
+                    </div>
 
                 </nav>
                 <!-- Sidebar end -->
@@ -92,6 +107,7 @@
         <!-- <span id="get-username">{{ username }}</span> -->
         <script type="text/javascript">
             const username = `{{ user.username }}`;
+            const current_room = `{{ current_room }}`;
         </script>
 
         <!-- Custom chat JS -->
