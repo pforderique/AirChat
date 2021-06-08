@@ -119,14 +119,14 @@ input[type=text]:focus{
 }
 
 .others-msg {
-    margin-right:7em;
+    margin-right:9em;
     margin-left: 1em;
     padding: 0.5em 0.5em 0.5em 1em;
     border-radius: 5px;
     border-color: grey;
-    border-width: 0.5px;
+    border-width: 1px;
     border-style: solid;
-    background-color: #C2DBFB;
+    background-color: #e5ecee;
     /* animation */
     animation-name: fadeIn;
     animation-duration: 0.75s;
@@ -135,16 +135,16 @@ input[type=text]:focus{
 }
 
 .my-msg {
-    margin-left:7em;
+    margin-left:9em;
     margin-right:1em;
     padding: 0.5em 0.5em 0.5em 1em;
     border-radius: 5px;
-    border-color: #206ED2;
-    border-width: 1px;
+    border-color: #19303f;
+    border-width: 2px;
     border-style: solid;
     /* animation */
     animation-name: fadeIn;
-    animation-duration: 0.75s;
+    animation-duration: 0.6s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
 }
@@ -171,7 +171,7 @@ input[type=text]:focus{
 .my-username {
     font-weight: bold;
     font-size: 1.1em;
-    color: #FF6B13;
+    color: #ff5e01;
 }
 
 #msg-input {

@@ -12,7 +12,6 @@ def home():
 
 
 @views.route("/chat", methods=["GET", "POST"])
-# @login_required
 def chat():
     if request.method == "GET":
         if not current_user.is_authenticated:

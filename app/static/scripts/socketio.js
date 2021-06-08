@@ -13,18 +13,47 @@ document.addEventListener('DOMContentLoaded', () => {
             const span_timestamp = document.createElement('span');
             const br = document.createElement('br');
 
-            if (data.username) {
-                // Then this message was sent by a USER
-                span_username.innerHTML = data.username;
-                span_timestamp.innerHTML = data.time_stamp;
-                p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML; // msg contains the message, as we defined
+            // Current user's own message:
+            if (data.username == username) {
+                p.setAttribute("class", "my-msg");
+
+                // Username
+                span_username.setAttribute("class", "my-username");
+                span_username.innerText = data.username;
+
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data.time_stamp;
+
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML
 
                 // attach append the data to the end there
                 document.querySelector('#display-message-section').append(p);
+
                 // erase the value in the message bar
                 document.querySelector('#user_message').value = '';
-            } else {
-                // ELSE this was a system generated message
+            } 
+            // Display other users' messages
+            else if (typeof data.username !== 'undefined') {
+                p.setAttribute("class", "others-msg");
+
+                // Username
+                span_username.setAttribute("class", "other-username");
+                span_username.innerText = data.username;
+
+                // Timestamp
+                span_timestamp.setAttribute("class", "timestamp");
+                span_timestamp.innerText = data.time_stamp;
+
+                // HTML to append
+                p.innerHTML += span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+
+                //Append
+                document.querySelector('#display-message-section').append(p);
+            } 
+            // ELSE this was a system generated message
+            else {
                 printSysMsg(data['msg']);
             }
 
