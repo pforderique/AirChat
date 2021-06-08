@@ -23,7 +23,7 @@ def create_app():
     app.config['WTF_CSRF_SECRET_KEY'] = environ.get('CSRF_SECRET_KEY')
 
     # configure database
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}' #environ.get("DB_URI")
+    app.config['SQLALCHEMY_DATABASE_URI'] =  environ.get("DB_URI") #f'sqlite:///{DB_NAME}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     from .views import views
@@ -34,7 +34,8 @@ def create_app():
 
     # Initalize the database
     db.init_app(app)
-    create_database(app)
+    # create_database(app)
+    # db.create_all(app=app)
 
     # Initialize flask Socketio
     socketio.init_app(app)
