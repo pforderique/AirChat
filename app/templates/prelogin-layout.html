@@ -19,17 +19,29 @@
     <body>
         <!-- Main section start -->
         <div class="main-section">
-                <!-- Flash Messages -->
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        Category: {{messages[0][0]}} || {{ messages[0][1] }}
-                    {% endif %}
-                {% endwith %}
+            <!----------- Flash messages ----------->
+            {% with messages = get_flashed_messages(with_categories=true) %} 
+            {% if messages %} 
+                {% for category, message in messages %} 
+                {% if category == 'error' %}
+                    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alter-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+            {% endif %} {% endfor %} {% endif %} {% endwith %}
 
                 {% block content%}
                 {% endblock %}
 
-            </div>
             <!-- Righthand side end -->
         </div>
         <!-- Main section end -->

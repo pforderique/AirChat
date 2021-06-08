@@ -16,12 +16,29 @@
     </head>
 
     <body>
-        <!-- Flash error messages -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <p class=formError>{{ messages[0] }}</p>
-            {% endif %}
-        {% endwith %}
+        <!----------- Flash messages ----------->
+        {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages %} 
+            <div class="flashy">
+                <div class="">
+                    {% for category, message in messages %} 
+                    {% if category == 'error' %}
+                    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success alter-dismissable fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
+                </div>
+            </div>
 
         <div class="wrapper">
 
@@ -63,7 +80,7 @@
                         <div class="modal-content">
                             <span class="close">&times;</span>
                             <form id="room-creation" action="{{url_for('views.chat')}}" method="POST">
-                                <label for="room_name">Room Name: </label>
+                                <label for="room_name" class="room-name-input">Room Name: </label>
                                 <input type="text" class="form-control" placeholder="Enter Room Name" aria-describedby="basic-addon2" autocomplete="off" name="room_name">
                                 <label for="password">Room Password: </label>
                                 <input type="text" class="form-control" placeholder="Enter a Password" aria-describedby="basic-addon2" autocomplete="off" name="password">

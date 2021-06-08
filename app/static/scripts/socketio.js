@@ -1,34 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
     var socket = io.connect('/');//'http://' + document.domain + ':' + location.port);
     
-    let room = current_room; // auto join this room
+    let room = capatialize(current_room); // auto join this room
     joinRoom(room)
-
-    // socket.on('connect', function() { // can also just use () => here too 
-    //     socket.send("I am connected!") // using SEND will automatically send it to bucket labeled 'message'
-    // });
 
     // message event for the client (message in flask is the backend stuff of course) for when we receive
     socket.on('message', data =>{
-        const p = document.createElement('p');
-        const span_username = document.createElement('span');
-        const span_timestamp = document.createElement('span');
-        const br = document.createElement('br');
+        // only if msg isnt empty...
+        if(data.msg){
+            const p = document.createElement('p');
+            const span_username = document.createElement('span');
+            const span_timestamp = document.createElement('span');
+            const br = document.createElement('br');
 
-        if (data.username) {
-            // Then this message was sent by a USER
-            span_username.innerHTML = data.username;
-            span_timestamp.innerHTML = data.time_stamp;
-            p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML; // msg contains the message, as we defined
+            if (data.username) {
+                // Then this message was sent by a USER
+                span_username.innerHTML = data.username;
+                span_timestamp.innerHTML = data.time_stamp;
+                p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML; // msg contains the message, as we defined
 
-            // attach append the data to the end there
-            document.querySelector('#display-message-section').append(p);
-            // erase the value in the message bar
-            document.querySelector('#user_message').value = '';
-        } else {
-            // ELSE this was a system generated message
-            printSysMsg(data['msg']);
+                // attach append the data to the end there
+                document.querySelector('#display-message-section').append(p);
+                // erase the value in the message bar
+                document.querySelector('#user_message').value = '';
+            } else {
+                // ELSE this was a system generated message
+                printSysMsg(data['msg']);
+            }
+
         }
+        scrollDownChatWindow();
     })
 
     // Send Message Button =  Standard event listenter for the click of the button
@@ -41,10 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } );
     };
 
+    // Create Room button
+    document.querySelector('#create_room').onclick = () => {
+        location.reload();
+        console.log('pressed!');
+    };
+
     // Room Selection
     document.querySelectorAll('.select-room').forEach(p => {
         p.onclick = () => {
-            let newRoom = p.innerHTML;
+            let newRoom = capatialize(p.innerHTML);
             if (newRoom === room) {
                 msg = `You are already in room ${room}.`
                 printSysMsg(msg);
@@ -72,23 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             xhr.send(`username=${username}&room_name=${room}`);
 
                             location.reload();
-                            
-                            // switch into Global after deleting the room
-                            // document.querySelector('#Global').click(); // RIGHT NOW IT JUST PUTS YOU BACK INTO GLOBAL 
                         }
                         chat_header.parentNode.insertBefore(btn, chat_header.nextSibling);
-
-                        // add event listener to it
-                        // function delete_room(username, room_name){
-                        //     var xmlHttp = new XMLHttpRequest();
-                        //     xmlHttp.open( "GET", '/delete-room', false ); // false for synchronous request
-                        //     xmlHttp.send( null );
-                        //     return xmlHttp.responseText;
-                        // }
-                        // document.querySelector('.leave-chat').onclick = function() {
-                        //     delete_room(username, room)
-                        // }
-
                     }
                 } else { 
                     // we are in global -- remove the LEAVE CHAT button if exists
@@ -117,8 +109,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Print system message
     function printSysMsg(msg) {
         const p = document.createElement('p');
+        p.setAttribute("class", "system-msg");
         p.innerHTML = msg;
         document.querySelector('#display-message-section').append(p);
+        scrollDownChatWindow()
+    }
+
+    // Scroll chat window down
+    function scrollDownChatWindow() {
+        const chatWindow = document.querySelector("#display-message-section");
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    // capatialize a name
+    function capatialize(room_name){
+        return room_name.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
     }
 })
 

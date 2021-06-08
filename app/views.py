@@ -22,12 +22,12 @@ def chat():
         session['current_room'] = "Global"
 
     if request.method == "POST":
-        room_name = request.form.get("room_name")
+        room_name = request.form.get("room_name").title()
         password = request.form.get("password")
 
         print(f"got room {room_name} with pass {password}")
         
-        room = db.session.query(Room).filter_by(name=room_name.capitalize()).first()
+        room = db.session.query(Room).filter_by(name=room_name).first()
         # if room name already exists, sign into this room (aka add user as participant)
         if room:
             if pbkdf2_sha256.verify(password, room.password):
@@ -36,16 +36,19 @@ def chat():
                 db.session.commit()
                 flash('Signed into room', 'success')
             else:
-                flash('Password incorrect', 'danger')
+                flash('Password incorrect', 'error')
 
-        # else create this room for the user (add them as participant)
+        # else create this room for the user (add them as participant) if valid name
         else:
-            hashed_pass = pbkdf2_sha256.hash(password)
-            room = Room(name=room_name.capitalize(), password=hashed_pass)
-            current_user.rooms.append(room)
-            session['current_room'] = room.name
-            db.session.commit()
-            flash("room created successfully", 'success')
+            if room_name == "Global": flash('Cannot use that name', 'error')
+            elif len(room_name) > 15: flash('Please keep name under 15 chars', 'error')
+            else:
+                hashed_pass = pbkdf2_sha256.hash(password)
+                room = Room(name=room_name, password=hashed_pass)
+                current_user.rooms.append(room)
+                session['current_room'] = room.name
+                db.session.commit()
+                flash("room created successfully", 'success')
 
     # pass in the user's rooms in order of (most recent ... less recent)
     rooms = reversed(list(current_user.rooms)) 

@@ -16,5 +16,8 @@
         </div>
         {{ form.csrf_token }}
     </form>
+
+    <hr>
+    <p>Already registered? <a href="{{url_for('auth.login')}}">Login here</a>.</p>
     
 {% endblock %}
