@@ -5,7 +5,7 @@ from . import socketio
 
 @socketio.on('message')
 def message(data):
-    print(f"\n\n{data}\n\n")
+    # print(f"\n\n{data}\n\n")
     # sends that data to connected clients -- by default, it pushes it to the event bucket called 'message'
     send({
         'msg':data['msg'], 
