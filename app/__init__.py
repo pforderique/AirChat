@@ -35,7 +35,7 @@ def create_app():
     # Initalize the database
     db.init_app(app)
     # create_database(app)
-    db.create_all(app=app)
+    # db.create_all(app=app)
 
     # Initialize flask Socketio
     socketio.init_app(app)
