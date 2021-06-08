@@ -16,6 +16,7 @@ def message(data):
 
 @socketio.on('join')
 def join(data):
+    session['current_room'] = data['room']
     join_room(data['room'])
     send({'msg': data['username'] + ' has joined the room ' + data['room']}, room=data['room'] )
 

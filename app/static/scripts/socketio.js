@@ -31,10 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    // socket.on('some-event', data =>{
-    //     console.log(`Message received: ${data}`);
-    // })
-
     // Send Message Button =  Standard event listenter for the click of the button
     document.querySelector('#send_message').onclick = () => {
         // grab the text and send it to the server as a JSON 
@@ -56,6 +52,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 leaveRoom(room);
                 joinRoom(newRoom);
                 room = newRoom;
+
+                // change header 
+                var chat_header = document.querySelector('#chat-header-title')
+                chat_header.innerHTML = `Chat Room: ${room}`;
+                // - add leave button IFF its not for the Global chat
+                if(room != "Global"){
+                    if(!document.contains(document.querySelector(".leave-chat"))){
+                        const btn = document.createElement('button');
+                        btn.className = "leave-chat btn-danger"
+                        const i = document.createElement('i');
+                        i.className = "fa fa-times-circle";
+                        btn.innerHTML = "Leave " + i.outerHTML; 
+                        btn.onclick = () => {
+                            // send POST request to /delete-room
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", `/delete-room`, false);
+                            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            xhr.send(`username=${username}&room_name=${room}`);
+
+                            location.reload();
+                            
+                            // switch into Global after deleting the room
+                            // document.querySelector('#Global').click(); // RIGHT NOW IT JUST PUTS YOU BACK INTO GLOBAL 
+                        }
+                        chat_header.parentNode.insertBefore(btn, chat_header.nextSibling);
+
+                        // add event listener to it
+                        // function delete_room(username, room_name){
+                        //     var xmlHttp = new XMLHttpRequest();
+                        //     xmlHttp.open( "GET", '/delete-room', false ); // false for synchronous request
+                        //     xmlHttp.send( null );
+                        //     return xmlHttp.responseText;
+                        // }
+                        // document.querySelector('.leave-chat').onclick = function() {
+                        //     delete_room(username, room)
+                        // }
+
+                    }
+                } else { 
+                    // we are in global -- remove the LEAVE CHAT button if exists
+                    if (document.contains(document.querySelector(".leave-chat"))) {
+                        document.querySelector(".leave-chat").remove();
+                    }
+                }
             }
         };
     });

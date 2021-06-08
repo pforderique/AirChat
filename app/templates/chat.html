@@ -8,9 +8,8 @@
         <title>Chat Page - AirChat</title>
 
         <!-- Bootstrap + Font Awesome -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-replace-svg="nest"></script>
 
         <!-- Custom css for chat pages -->
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/chat_style.css') }}">
@@ -27,24 +26,21 @@
         <div class="wrapper">
 
             <!-- Nav bar start -->
-            <nav class="navbar navbar-expand-sm navbar-light fixed-top" style="background-color: #66a1ee">
-
-                <div class="container-fluid">
-                    <div id="show-sidebar-button" class="cursor-pointer">
-                        <i class="fas fa-plus-circle "></i>
-                        <span>Rooms</span>
-                    </div>
- 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a id="logout-btn" class="nav-link" href="{{ url_for('auth.logout') }}"><span style="color: #335177">Logout</span></a>
-                            </li>
-                        </ul>
-                    </div>
+            <nav class="navbar navbar-default navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <a class="navbar-brand" href="{{url_for('views.chat')}}">AirChat</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                      <a class="add-bottom nav-link" aria-current="page" href="{{url_for('views.chat')}}">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="add-bottom nav-link" aria-current="page" href="{{url_for('auth.logout')}}">Logout</a>
+                    </li>
+                  </ul>
                 </div>
             </nav>
             <!-- Nav bar end -->
@@ -61,7 +57,7 @@
                     {% endfor %}
 
                     <!-- Create Room button -->
-                    <button id="open_modal" class="btn btn-warning" type="button">Create/Join Room <i class="fas fa-plus-circle"></i></button>
+                    <button id="open_modal" class="btn btn-warning" type="button">Create/Join <i class="fas fa-plus-circle"></i></button>
                     <!-- Create Room Form -->
                     <div id="room_modal" class="modal">
                         <div class="modal-content">
@@ -72,7 +68,7 @@
                                 <label for="password">Room Password: </label>
                                 <input type="text" class="form-control" placeholder="Enter a Password" aria-describedby="basic-addon2" autocomplete="off" name="password">
                                 <br>
-                                <button id="create_room" class="btn btn-warning" type="button submit" form="room-creation">Create/Join Room <i class="fas fa-plus-circle"></i></button>
+                                <button id="create_room" class="btn btn-warning" type="button submit" form="room-creation">Create/Join <i class="fas fa-plus-circle"></i></button>
                             </form>
                         </div>
                     </div>
@@ -82,6 +78,12 @@
 
                 <!-- Rightside pannel start -->
                 <div id="rightside-pannel">
+
+                    <!-- Window Header start -->
+                    <div id="chat-window-header">
+                        <h3 id="chat-header-title">Chat Room: {{ session['current_room'] }}</h3>
+                    </div>
+                    <!-- Window Header end -->
 
                     <!-- Display message start-->
                     <div id="display-message-section">
@@ -107,7 +109,7 @@
         <!-- <span id="get-username">{{ username }}</span> -->
         <script type="text/javascript">
             const username = `{{ user.username }}`;
-            const current_room = `{{ current_room }}`;
+            const current_room = `{{ session['current_room'] }}`;
         </script>
 
         <!-- Custom chat JS -->
@@ -120,11 +122,11 @@
         <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
 
         <!-- Bootstrap -->
-        <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
-        <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
         <!-- Font Awesome JS -->
-        <!-- <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script> -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
     </body>
