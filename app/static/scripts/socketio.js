@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    var socket = io.connect('/');//'http://' + document.domain + ':' + location.port);
+    var socket = io.connect('http://airchat-app.herokuapp.com/');//'http://' + document.domain + ':' + location.port);
     
     let room = capatialize(current_room); // auto join this room
     joinRoom(room)
